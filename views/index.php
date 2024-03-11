@@ -45,6 +45,14 @@
             margin-bottom: 10px;
         }
 
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .button-group {
+            margin-top: 10px;
+        }
+
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
@@ -53,6 +61,13 @@
             height: 30px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
+        }
+        
+         .titulo {
+            margin-top: 7%;
+            text-align: center;
+            content: flex;
+
         }
 
         @keyframes spin {
@@ -64,6 +79,8 @@
 <body>
     
 <div class="barra"></div>
+
+<div class="titulo">Pink Roulette</div>
 
 
 
@@ -97,8 +114,37 @@ function agregarPollos() {
     camposDiv.innerHTML = '';
 
     for (var i = 1; i <= cantidad; i++) {
-        camposDiv.innerHTML += '<div class="participantes"><label for="participante' + i + '">Ingrese el RUT del participante ' + i + ':</label><input type="number" id="participante' + i + '" name="participante' + i + '"><button onclick="mostrarContenidoParticipante(' + i + ')">Mostrar Contenido</button><div id="contenido' + i + '"></div></div>';
+        var html = '<div class="participantes">' +
+            '<div class="input-group"><label for="nombre' + i + '">Nombre del participante ' + i + ':</label>' +
+            '<input type="text" id="nombre' + i + '" name="nombre' + i + '"></div>' +
+            '<div class="input-group"><label for="participante' + i + '">RUT del participante ' + i + ':</label>' +
+            '<input type="number" id="participante' + i + '" name="participante' + i + '"></div>';
+
+        for (var j = 1; j <= cantidad; j++) {
+            html += '<div class="input-group"><label for="nota' + i + '_' + j + '">Nota ' + j + ' para participante ' + i + ':</label>' +
+            '<input type="number" id="nota' + i + '_' + j + '" name="nota' + i + '_' + j + '" min="1" max="7" step="0.1"></div>';
+        }
+
+        html += '<div class="input-group"><label for="notaFinal' + i + '">Nota Final:</label>' +
+            '<input type="text" id="notaFinal' + i + '" name="notaFinal' + i + '" readonly></div>' +
+            '<div class="button-group">' +
+            '<button onclick="mostrarContenidoParticipante(' + i + ')">Mostrar Contenido</button>' +
+            '<button onclick="calcularPromedio(' + i + ', ' + cantidad + ')">Calcular Promedio</button>' +
+            '</div>' +
+            '<div id="contenido' + i + '"></div></div>';
+
+        camposDiv.innerHTML += html;
     }
+}
+
+function calcularPromedio(participante, totalNotas) {
+    var suma = 0;
+    for (var i = 1; i <= totalNotas; i++) {
+        var nota = document.getElementById('nota' + participante + '_' + i).value;
+        suma += parseFloat(nota);
+    }
+    var promedio = suma / totalNotas;
+    document.getElementById('notaFinal' + participante).value = promedio.toFixed(1);
 }
 
 function mostrarContenidoParticipante(participante) {
