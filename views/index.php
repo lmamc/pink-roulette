@@ -41,24 +41,9 @@
             border-radius: 5px; 
         }
 
-        #numero {
+        .participantes {
             margin-bottom: 10px;
         }
-
-        #boton {
-            background-color: rgb(0, 85, 169);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #boton:hover {
-            background-color: rgba(0, 85, 169, 0.8); 
-        }
-
 
         .loader {
             border: 4px solid #f3f3f3;
@@ -79,21 +64,16 @@
 <body>
     
 <div class="barra"></div>
-<div class="contenedor">
-    <label for="numero">Ingrese un RUT:</label>
-    <input type="number" id="numero" name="numero">
-    <button id="boton" onclick="mostrarContenido()">Mostrar Contenido</button>
 
-    <div id="loader" class="loader" style="display: none;"></div>
-    <div id="contenido"></div>
 
-</div>
+
 <div class="contenedor">
-<div class="participantes">
-    <label for="participantes">Ingrese la cantidad de participantes:</lable>
-    <input type="number" id="participantes" name="participantes">
-    <button id="boton1">Generar  cantidad de participantes</button>
-</div>
+    <div class="participantes">
+        <label for="cantidad">Ingrese la cantidad de participantes:</label>
+        <input type="number" id="cantidad" name="cantidad">
+        <button onclick="agregarPollos()">Generar cantidad de participantes</button>
+    </div>
+    <div id="campos"></div>
 </div>
 
 <script>
@@ -109,6 +89,24 @@ function mostrarContenido() {
         document.getElementById("contenido").innerHTML = contenido;
         document.getElementById("loader").style.display = "none";
     }, 1000); 
+}
+
+function agregarPollos() {
+    var cantidad = document.getElementById("cantidad").value;
+    var camposDiv = document.getElementById("campos");
+    camposDiv.innerHTML = '';
+
+    for (var i = 1; i <= cantidad; i++) {
+        camposDiv.innerHTML += '<div class="participantes"><label for="participante' + i + '">Ingrese el RUT del participante ' + i + ':</label><input type="number" id="participante' + i + '" name="participante' + i + '"><button onclick="mostrarContenidoParticipante(' + i + ')">Mostrar Contenido</button><div id="contenido' + i + '"></div></div>';
+    }
+}
+
+function mostrarContenidoParticipante(participante) {
+    var rut = document.getElementById("participante" + participante).value;
+    var enlace = "https://imagenes.ucm.cl/foto_alum.php?alu=" + rut;
+    
+    var contenido = "<iframe src='" + enlace + "' style='width:100%; height:500px; margin-left:40%;margin-top:3%;border:none;'></iframe>";
+    document.getElementById("contenido" + participante).innerHTML = contenido;
 }
 </script>
 
